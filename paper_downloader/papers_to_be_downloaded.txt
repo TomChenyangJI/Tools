@@ -1,1 +1,36 @@
+React: Synergizing reasoning and acting in language models
+Large language models, though impressive, are not the solution
+Progprompt: Generating situated robot task plans using large language models
+React: Synergizing reasoning and acting in language models
+Blip-2: Bootstrapping language-image pre-training with frozen image encoders and large language models
+Generalized planning in pddl domains with pretrained large language models
+Large language models, though impressive, are not the solution
+Toolformer: Language models can teach themselves to use tools
+Pddl planning with pretrained large language models
+Lampp: Language models as probabilistic priors for perception and action
+Perceiver-actor: A multi-task transformer for robotic manipulation
+ViperGPT: visual inference via python execution for reasoning
+Do as I can, not as I say: grounding language in robotic affordances
+Nerf: Representing scenes as neural radiance fields for view synthesis
+Freenerf: Improving few-shot neural rendering with free frequency regularization
+Sinnerf: Training neural radiance fields on complex scenes from a single image
+Block-nerf: Scalable large scene neural view synthesis
+Unsupervised learning of object keypoints for perception and control
+In-context learning and induction heads
+Probabilistic implicit scene completion
+Few-view object reconstruction with unknown categories and camera poses.
+Zip-nerf: Anti-aliased grid-based neural radiance fields
+Compnvs: Novel view synthesis with scene completion
+Mega-nerf: Scalable construction of large-scale nerfs for virtual fly-throughs
+Bundlesdf: Neural 6-dof tracking and 3d reconstruction of unknown objects
+isdf: Real-time neural signed distance fields for robot perception
+Feature-realistic neural fusion for real-time, open set scene understanding
+Vision-only robot navigation in a neural radiance world
+Di-fusion: Online implicit 3d reconstruction with deep priors
+Clip-fields: Weakly supervised semantic fields for robotic memory
+Language-driven representation learning for robotics
+Progprompt: Generating situated robot task plans using large language models
+Structured, flexible, and robust: benchmarking and improving large language models towards more human-like behavior in out-of-distribution reasoning tasks
+Uncertainty guided policy for active robotic 3d reconstruction using neural radiance fields
+Fresh perspectives on the future of autonomous driving
 Model-based imitation learning for urban driving

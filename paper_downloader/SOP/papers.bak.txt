@@ -1,0 +1,68 @@
+Fresh perspectives on the future of autonomous driving
+Model-based imitation learning for urban driving
+High performance gpu-based physics simulation for robot learning
+Failure prediction with statistical guarantees for vision-based robot control
+Asking for help: Failure prediction in behavioral cloning through value approximation
+Robots that ask for help: Uncertainty alignment for large language model planners
+Task-driven out-of-distribution detection with statistical guarantees for robot learning
+A system-level view on out-of-distribution data in robotics
+BayesSim: adaptive domain randomization via probabilistic inference for robotics simulators
+Data-efficient domain randomization with bayesian optimization
+Learning active task-oriented exploration policies for bridging the sim-to-real gap
+AdaptSim: task-driven simulation adaptation for sim-to-real transfer
+Digit: A novel design for a low-cost compact high-resolution tactile sensor with application to in-hand manipulation
+Making sense of vision and touch: Learning multimodal representations for contact-rich tasks
+The surprising effectiveness of representation learning for visual imitation
+Dense object nets: Learning dense visual object descriptors by and for robotic manipulation
+Perceiver-actor: A multi-task transformer for robotic manipulation
+Unsupervised learning of object keypoints for perception and control
+Keypose: Multi-view 3d labeling and keypoint estimation for transparent objects
+Nerf-supervision: Learning dense object descriptors from neural radiance fields
+Deepsdf: Learning continuous signed distance functions for shape representation
+Integrated task and motion planning
+React: Synergizing reasoning and acting in language models
+Toolformer: Language models can teach themselves to use tools
+ViperGPT: visual inference via python execution for reasoning
+In-context learning and induction heads
+RT-1: robotics transformer for real-world control at scale
+Do as I can, not as I say: grounding language in robotic affordances
+Inner monologue: Embodied reasoning through planning with language models
+RT-2: Vision-language-action models transfer web knowledge to robotic control
+Code as policies: Language model programs for embodied control
+ChatGPT for robotics: Design principles and model abilities
+Open-vocabulary queryable scene representations for real world planning
+Language-driven representation learning for robotics
+Correcting robot plans with natural language feedback
+No to the right–online language corrections for robotic manipulation via shared autonomy
+Leveraging language for accelerated learning of tool manipulation
+Image as a foreign language: Beit pretraining for all vision and vision-language tasks
+Blip-2: Bootstrapping language-image pre-training with frozen image encoders and large language models
+Large language models, though impressive, are not the solution
+Palm-e: An embodied multimodal language model
+On the opportunities and risks of foundation models
+Segment anything
+Faith and fate: Limits of transformers on compositionality
+Progprompt: Generating situated robot task plans using large language models
+Structured, flexible, and robust: benchmarking and improving large language models towards more human-like behavior in out-of-distribution reasoning tasks
+Leveraging pre-trained large language models to construct and utilize world models for model-based task planning
+Empowering large language models with optimal planning proficiency
+Translating natural language to planning goals with large-language models
+Pddl planning with pretrained large language models
+Generalized planning in pddl domains with pretrained large language models
+Lampp: Language models as probabilistic priors for perception and action
+Nerf: Representing scenes as neural radiance fields for view synthesis
+Zip-nerf: Anti-aliased grid-based neural radiance fields
+Sinnerf: Training neural radiance fields on complex scenes from a single image
+Compnvs: Novel view synthesis with scene completion
+Freenerf: Improving few-shot neural rendering with free frequency regularization
+Few-view object reconstruction with unknown categories and camera poses.
+Block-nerf: Scalable large scene neural view synthesis
+Mega-nerf: Scalable construction of large-scale nerfs for virtual fly-throughs
+Probabilistic implicit scene completion
+Vision-only robot navigation in a neural radiance world
+Bundlesdf: Neural 6-dof tracking and 3d reconstruction of unknown objects
+Di-fusion: Online implicit 3d reconstruction with deep priors
+isdf: Real-time neural signed distance fields for robot perception
+Clip-fields: Weakly supervised semantic fields for robotic memory
+Feature-realistic neural fusion for real-time, open set scene understanding
+Uncertainty guided policy for active robotic 3d reconstruction using neural radiance fields

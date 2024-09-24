@@ -2,3 +2,5 @@ __pycache__
 screen_shots/
 .DS_Store
 __pycache__/
+./paper_downloader/SOP/*
+./paper_downloader/SOP
