@@ -116,6 +116,7 @@ def arxiv_filtered_downloader(all_arxiv_urls:list, pdf_save_path, paper):
     global arxiv_urls
     # print(all_arxiv_urls)
     for page_url in all_arxiv_urls:
+        time.sleep(sleep_time)
         try:
             arxiv_urls.append(page_url)
             arxiv_url = form_arxiv_url(page_url)
@@ -210,6 +211,7 @@ def get_request(url, params=None):
 
 def traversal_search_downloader_new(all_traversal_urls, save_path, paper):
     for url in all_traversal_urls:
+        time.sleep(sleep_time)
         try:
             resp = get_request(url)
             traversal_searched_urls.append(url)
@@ -245,6 +247,7 @@ def get_all_pdf_urls(all_urls):
 
 def pdf_url_extractor_downloader(all_pdf_urls, save_path, paper):
     for pdf_url in all_pdf_urls:
+        time.sleep(sleep_time)
         try:
             if valid_url(pdf_url):
                 # print("pdf url: ", pdf_url)
@@ -321,6 +324,7 @@ def depth_search(init_urls: list, paper, recu=0):
     if recu <= max_recursion:
         result = False
         for url in init_urls:
+            time.sleep(sleep_time)
             res = get_request(url)
             all_urls = get_all_urls_in_resp(res)
             success = download_paper(paper, all_urls)
@@ -347,8 +351,8 @@ def download_paper_wrapper(paper, recu=0):
             # print(res.text)
             all_urls = get_all_urls_in_resp(res)
 
-            with open("temp.html", "w") as fi:
-                fi.write(res.text)
+            # with open("temp.html", "w") as fi:
+            #     fi.write(res.text)
             download_succcess = download_paper(paper, all_urls)
             depth_search_success = False
             if download_succcess:
