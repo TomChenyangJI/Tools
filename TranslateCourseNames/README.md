@@ -1,0 +1,1 @@
+This project is to translate the titles of the courses or webinars by calling Google Translate API.

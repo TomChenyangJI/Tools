@@ -1,0 +1,1 @@
+This program will help you download the papers automatically and in batch, only needing you put the titles in the file 'papers_to_be_downloaded.txt' and then execute main.py, with each title on the single line, , based on Google search. This program is not about hacking database but scanning the result of Google search returns.

@@ -1,0 +1,1 @@
+In this folder, I put a couple of programs that I developed at home to make my work life easier, including an `automated attendence registration program` and a `Huawei Internal MOOC Course Downloader`.
