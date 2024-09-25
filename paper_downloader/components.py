@@ -7,6 +7,7 @@ from bs4 import BeautifulSoup
 from config import *
 import re
 import requests
+import unicodedata
 
 
 arxiv_urls = []
@@ -103,7 +104,7 @@ def is_title_in_content(paper, content):
 def is_right_paper(save_path, paper):
     # in this function , i need to check if the pdf downloaded is the right paper i want to download
     content = get_pdf_content(save_path)
-    import unicodedata
+    
     # this is for the wrong recognition of letters in PDF
     content = unicodedata.normalize("NFKD", content)
     return is_title_in_content(paper, content)
