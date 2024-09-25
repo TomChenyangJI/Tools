@@ -7,7 +7,6 @@ from bs4 import BeautifulSoup
 from config import *
 import re
 import requests
-import unicodedata
 
 
 arxiv_urls = []
@@ -42,9 +41,7 @@ def download_pdf(url, file_name="paper_name", trial=0):
             # with requests.get(url, verify=False, stream=True) as response:
             with requests.get(url, verify=False) as response:
                 if response.status_code == 200:
-                    # print("hit here .... ")
                     file_name = file_name.strip().replace(":", " ")
-                    # print(file_name)
                     with open(file_name, "wb") as file:
                         # for chunk in response.iter_content(chunk_size=8192):
                         #     if chunk:
@@ -104,7 +101,7 @@ def is_title_in_content(paper, content):
 def is_right_paper(save_path, paper):
     # in this function , i need to check if the pdf downloaded is the right paper i want to download
     content = get_pdf_content(save_path)
-    
+    import unicodedata
     # this is for the wrong recognition of letters in PDF
     content = unicodedata.normalize("NFKD", content)
     return is_title_in_content(paper, content)
@@ -164,13 +161,11 @@ def extract_pdf_url(href: str):
 
 def get_all_urls_in_resp(resp):
     # two-layer deep search
-    # print(resp)
     all_urls = []
     soup = BeautifulSoup(resp.text)
     a_li = soup.find_all("a")  # there might be exceptions here
     all_urls = []
     for a in a_li:
-        # print(a)
         try:
             href = a['href']
             url_li = href.split("http")
@@ -203,12 +198,9 @@ def valid_url(url):
 
 def get_pdf_content(file):
     from PyPDF2 import PdfReader
-    # import os
-    # print(os.path.exists(file), "    << test")
     reader = PdfReader(file)
     pages = reader.pages
     content = ""
-    # print(pages[0].extract_text())
     for page in pages[: len(pages)//3]:
         content += page.extract_text()
     content = content.replace("\n", " ")
@@ -260,10 +252,7 @@ def pdf_url_extractor_downloader(all_pdf_urls, save_path, paper):
         time.sleep(sleep_time)
         try:
             if valid_url(pdf_url):
-                # print("pdf url: ", pdf_url)
                 result = download_pdf(pdf_url, save_path)  # this method is not safe
-                # print()
-                # print(" the result is , ", result)
                 if result and is_right_paper(save_path, paper):
                     print("pdf method succeeded")
                     return True
@@ -290,16 +279,12 @@ def download_paper(paper, all_urls):
     paper_cp = paper_cp.replace(" ", "_")
     save_path = os.path.join(pdf_base_path, paper_cp)
     save_path += ".pdf"
-    # print(res.text)
     # 1. arxiv first
-    # print(all_urls)
     try:
         all_arxiv_urls = get_all_arxiv_urls(all_urls)
-        # print(all_arxiv_urls)
         arxiv_done = arxiv_filtered_downloader(all_arxiv_urls, save_path, paper)
     except Exception:
         arxiv_done = False
-    # print("1>>>", arxiv_done)
 
     pdf_download_success: bool
     all_pdf_urls = []
@@ -321,12 +306,9 @@ def download_paper(paper, all_urls):
         # 3. if .pdf search fails again, then the mass search
         # it means this function doesn't download the paper either
         # when this happens, i need to use the depth search to download the paper
-        # traversal_search_success = False
         all_traversal_urls = get_all_traversal_urls(all_urls)
         traversal_search_success= traversal_search_downloader_new(all_traversal_urls, save_path, paper)
 
-    # if traversal_search_success:
-    #     return True
     return traversal_search_success
 
 
@@ -358,8 +340,6 @@ def download_paper_wrapper(paper, recu=0):
             if recu == 0:
                 print(paper)
             res = get_request("https://www.google.com/search", params={"q": paper, "start": str(recu * 10)})
-            # print(res.status_code)
-            # print(res.text)
             all_urls = get_all_urls_in_resp(res)
 
             with open("temp.html", "w") as fi:
@@ -370,7 +350,6 @@ def download_paper_wrapper(paper, recu=0):
                 return True
             else:  # depth search
                 print("depth serach start...")
-                # init_urls = get_initial_depth_search_urls(all_urls, arxiv_urls, pdf_search_method_urls)
                 depth_search_success = depth_search(all_urls, paper)
             if depth_search_success:
                 return True
