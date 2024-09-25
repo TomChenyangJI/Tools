@@ -331,7 +331,7 @@ def download_paper(paper, all_urls):
 
 
 def depth_search(init_urls: list, paper, recu=0):
-    print("\tdepth search init urls: ", init_urls)
+    # print("\tdepth search init urls: ", init_urls)
     if recu <= max_recursion:
         result = False
         for url in init_urls:
