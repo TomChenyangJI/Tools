@@ -83,30 +83,50 @@ def form_arxiv_url(url):
     return ""
 
 
-def is_right_paper(save_path, paper):
-    # in this function , i need to check if the pdf downloaded is the right paper i want to download
-    content = get_pdf_content(save_path)
-    # print(content)
-    import unicodedata
-    # this is for the wrong recognition of letters in PDF
-    content = unicodedata.normalize("NFKD", content)
-    # print(paper.lower())
-    # print(content.lower())
+def is_title_in_content(paper, content):
     paper_title_split = paper.lower().split(" ")
     paper_title_split = [ele.strip() for ele in paper_title_split if ele.strip() != ""]
     content_lower = content.lower()
     inx = content_lower.index(paper_title_split[0])
     l = len(paper)
-    conta_str = content_lower[inx: l*2+1]
-    # right_paper = True
+    conta_str = content_lower[inx: inx + l * 10 + 1]
     count = 0
     for ele in paper_title_split:
         if ele in conta_str:
             count += 1
-            # right_paper = False
-            # break
     if count / len(paper_title_split) >= match_threshold:
         return True
+    else:
+        return False
+
+
+def is_right_paper(save_path, paper):
+    # in this function , i need to check if the pdf downloaded is the right paper i want to download
+    content = get_pdf_content(save_path)
+    import unicodedata
+    # this is for the wrong recognition of letters in PDF
+    content = unicodedata.normalize("NFKD", content)
+    return is_title_in_content(paper, content)
+
+
+def get_arxiv_abstract_html_url(url):
+    abstract_html = url.replace("pdf", "abs")
+    return abstract_html
+
+
+def is_right_arxiv_paper(arxiv_pdf_url, paper):
+    abstract_html_url = get_arxiv_abstract_html_url(arxiv_pdf_url)
+    abstract_res = get_request(abstract_html_url)
+    time.sleep(sleep_time)
+    if abstract_res.status_code == 200:
+        abstract_text = abstract_res.text
+        abstract_soup = BeautifulSoup(abstract_text)
+        body_tag = abstract_soup.find("body")
+        abstract_text = body_tag.text
+        abstract_text = abstract_text.replace("\n", " ")
+        import unicodedata
+        content = unicodedata.normalize("NFKD", abstract_text)
+        return is_title_in_content(paper, content)
     else:
         return False
 
@@ -114,30 +134,19 @@ def is_right_paper(save_path, paper):
 def arxiv_filtered_downloader(all_arxiv_urls:list, pdf_save_path, paper):
     # arxiv link first because there are so many papers published on this website
     global arxiv_urls
-    # print(all_arxiv_urls)
     for page_url in all_arxiv_urls:
         time.sleep(sleep_time)
         try:
             arxiv_urls.append(page_url)
-            arxiv_url = form_arxiv_url(page_url)
-            print("\t arxiv url:  ", arxiv_url)
-            if arxiv_url != "":
-                result = download_pdf(arxiv_url, pdf_save_path)
-                # print("result is ", result)
-
+            arxiv_pdf_url = form_arxiv_url(page_url)
+            print("\t arxiv url:  ", arxiv_pdf_url)
+            if arxiv_pdf_url != "" and is_right_arxiv_paper(arxiv_pdf_url, paper):
+                result = download_pdf(arxiv_pdf_url, pdf_save_path)
                 if result:
-                    # print("hit this place")
-                    # print("---", is_right_paper(pdf_save_path, paper))
-                    if is_right_paper(pdf_save_path, paper):
-                        # print(paper)
-                        # print(">>>  hit here")
-                        print("arxiv method succeeded")
-                        return True
-                    else:
-                        delete_file(pdf_save_path)
+                    print("arxiv method succeeded")
+                    return True
         except Exception:
             continue
-
     print("arxiv method failed")
     return False
 
@@ -321,6 +330,7 @@ def download_paper(paper, all_urls):
 
 
 def depth_search(init_urls: list, paper, recu=0):
+    print("\tdepth search init urls: ", init_urls)
     if recu <= max_recursion:
         result = False
         for url in init_urls:
@@ -351,8 +361,8 @@ def download_paper_wrapper(paper, recu=0):
             # print(res.text)
             all_urls = get_all_urls_in_resp(res)
 
-            # with open("temp.html", "w") as fi:
-            #     fi.write(res.text)
+            with open("temp.html", "w") as fi:
+                fi.write(res.text)
             download_succcess = download_paper(paper, all_urls)
             depth_search_success = False
             if download_succcess:
