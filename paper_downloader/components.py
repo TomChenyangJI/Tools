@@ -87,7 +87,7 @@ def is_title_in_content(paper, content):
     content_lower = content.lower()
     inx = content_lower.index(paper_title_split[0])
     l = len(paper)
-    conta_str = content_lower[inx: inx + l * 10 + 1]
+    conta_str = content_lower[inx: inx + l * 20 + 1]
     count = 0
     for ele in paper_title_split:
         if ele in conta_str:
@@ -160,7 +160,6 @@ def extract_pdf_url(href: str):
 
 
 def get_all_urls_in_resp(resp):
-    # two-layer deep search
     all_urls = []
     soup = BeautifulSoup(resp.text)
     a_li = soup.find_all("a")  # there might be exceptions here
