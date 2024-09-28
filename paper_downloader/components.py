@@ -32,6 +32,18 @@ def get_all_arxiv_urls(all_urls):
     return all_arxiv_urls
 
 
+def get_cookies(res):
+    # res is an instance of request.get method (http response)
+    # save it to a file
+    cookies = res.cookies
+    new_cookies = {}
+
+    for cookie in cookies:
+        new_cookies[cookie.name] = cookie.value
+
+    return new_cookies
+
+
 def download_pdf(url, file_name="paper_name", trial=0):
     print("\turl is ", url)
     if trial < 3:
@@ -141,11 +153,11 @@ def arxiv_filtered_downloader(all_arxiv_urls:list, pdf_save_path, paper):
             if arxiv_pdf_url != "" and is_right_arxiv_paper(arxiv_pdf_url, paper):
                 result = download_pdf(arxiv_pdf_url, pdf_save_path)
                 if result:
-                    print("arxiv method succeeded")
+                    print("arxiv method succeeded ^V^")
                     return True
         except Exception:
             continue
-    print("arxiv method failed")
+    print("arxiv method failed V^V")
     return False
 
 
@@ -159,18 +171,50 @@ def extract_pdf_url(href: str):
     return url
 
 
-def get_all_urls_in_resp(resp):
-    all_urls = []
+def get_domain(url):
+    from urllib.parse import urlparse
+    parsed_url = urlparse(url)
+    return parsed_url.netloc
+
+
+def join_scheme_domain_path(domain, path, scheme="https"):
+    # print("join scheme domain path: >>>", domain, path, scheme)
+    # from urllib.parse import urlunparse
+    url = scheme + "://" + domain + path
+    return url
+    # return urlunparse((scheme, domain, path))
+
+
+def get_all_urls_in_resp(resp, origin_url=""):
     soup = BeautifulSoup(resp.text)
     a_li = soup.find_all("a")  # there might be exceptions here
     all_urls = []
     for a in a_li:
         try:
             href = a['href']
-            url_li = href.split("http")
-            url_li = ['http' + url for url in url_li]
-            all_urls.extend(url_li)
-        except Exception:
+            if "http" in href:
+                url_li = href.split("http")
+                url_li = ['http' + url for url in url_li]
+                all_urls.extend(url_li)
+            else:
+                # "http" is not in href
+                if href.startswith("/") and (not href.startswith("/search?")):
+                    print("test href is ", href)
+                    # href is a path
+                    if origin_url != "":
+                        domain = get_domain(origin_url)
+                    else:
+                        # domain = "www.google.com"
+                        continue
+
+                    joined_url = join_scheme_domain_path(domain, href)
+                    # print(domain, joined_url)
+                    all_urls.append(joined_url)
+                else:
+                    with open("manual_check_urls.txt", "a+") as man_file:
+                        man_file.write(href + "\n")
+        except Exception as e:
+            print("get all urls method, encountering exception:", e)
             continue
 
     all_urls = list(set(all_urls))
@@ -226,6 +270,7 @@ def traversal_search_downloader_new(all_traversal_urls, save_path, paper):
                         delete_file(save_path)
         except Exception:
             continue
+    print("traversal method failed V^V")
     return False
 
 
@@ -253,12 +298,12 @@ def pdf_url_extractor_downloader(all_pdf_urls, save_path, paper):
             if valid_url(pdf_url):
                 result = download_pdf(pdf_url, save_path)  # this method is not safe
                 if result and is_right_paper(save_path, paper):
-                    print("pdf method succeeded")
+                    print("pdf method succeeded ^V^")
                     return True
         except Exception:
             continue
 
-    print("pdf method failed")
+    print("pdf method failed V^V")
     return False
 
 
@@ -313,22 +358,26 @@ def download_paper(paper, all_urls):
 
 def depth_search(init_urls: list, paper, recu=0):
     # print("\tdepth search init urls: ", init_urls)
+    print("depth search recu: ", recu)
     if recu <= max_recursion:
         result = False
         for url in init_urls:
-            time.sleep(sleep_time)
+            time.sleep(depth_search_sleeping_time)
             res = get_request(url)
-            all_urls = get_all_urls_in_resp(res)
+            all_urls = get_all_urls_in_resp(res, url)
             success = download_paper(paper, all_urls)
             if success:
+                print("depth search succeeded ^V^")
                 return True
             else:
-                time.sleep(sleep_time)
+                time.sleep(depth_search_sleeping_time)
                 result = depth_search(all_urls, paper, recu+1)
                 if result:
+                    print("depth search succeeded ^V^")
                     break
         return result
     else:
+        print("depth search failed V^V")
         return False
 
 
@@ -338,13 +387,14 @@ def download_paper_wrapper(paper, recu=0):
         try:
             if recu == 0:
                 print(paper)
-            res = get_request("https://www.google.com/search", params={"q": paper, "start": str(recu * 10)})
-            all_urls = get_all_urls_in_resp(res)
+            google_search_base_url = "https://www.google.com/search"
+            res = get_request(google_search_base_url, params={"q": paper, "start": str(recu * 10)})
+            all_urls = get_all_urls_in_resp(res, google_search_base_url)
 
             with open("temp.html", "w") as fi:
                 fi.write(res.text)
             download_succcess = download_paper(paper, all_urls)
-            depth_search_success = False
+            depth_search_success: bool
             if download_succcess:
                 return True
             else:  # depth search
